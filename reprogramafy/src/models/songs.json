@@ -1,0 +1,188 @@
+[
+    {
+        "id": 1,
+        "title": "Pode Dale",
+        "launchYear": "2022",
+        "favorited": true,
+        "artists": [
+            "Kaya Conky",
+            "Batooke Native"
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Replay",
+        "launchYear": "2021",
+        "favorited": true,
+        "artists": [
+            "Lady Gaga",
+            "Dorian Electra"
+        ]
+    },
+    {
+        "id": 3,
+        "title": "Number One",
+        "launchYear": "2021",
+        "favorited": true,
+        "artists": [
+            "Pabllo Vittar",
+            "Rennan da Penha"
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Enemy",
+        "launchYear": "2021",
+        "favorited": true,
+        "artists": [
+            "Imagine Dragons",
+            "JID"
+        ]
+    },
+    {
+        "id": 5,
+        "title": "Brujas",
+        "launchYear": "2017",
+        "favorited": true,
+        "artists": [
+            "Princess Nokia"
+        ]
+    },
+    {
+        "id": 6,
+        "title": "Slumber Party",
+        "launchYear": "2021",
+        "favorited": true,
+        "artists": [
+            "Ashnikko",
+            "Princess Nokia"
+        ]
+    },
+    {
+        "id": 7,
+        "title": "Pisando Fofo",
+        "launchYear": "2022",
+        "favorited": true,
+        "artists": [
+            "Gloria Groove",
+            "Tasha & Tracie"
+        ]
+    },
+    {
+        "id": 8,
+        "title": "Follow Me",
+        "launchYear": "2022",
+        "favorited": true,
+        "artists": [
+            "Pabllo Vittar",
+            "Rina Sawayama"
+        ]
+    },
+    {
+        "id": 9,
+        "title": "Dynasty",
+        "launchYear": "2020",
+        "favorited": true,
+        "artists": [
+            "Rina Sawayama"
+        ]
+    },
+    {
+        "id": 10,
+        "title": "A loba",
+        "launchYear": "1997",
+        "favorited": true,
+        "artists": [
+            "Alcione"
+        ]
+    },
+    {
+        "id": 11,
+        "title": "Baby 95",
+        "launchYear": "2021",
+        "favorited": true,
+        "artists": [
+            "Liniker"
+        ]
+    },
+    {
+        "id": 12,
+        "title": "Haunted",
+        "launchYear": "2003",
+        "favorited": true,
+        "artists": [
+            "Evanescense"
+        ]
+    },
+    {
+        "id": 13,
+        "title": "Cuff it",
+        "launchYear": "2023",
+        "favorited": true,
+        "artists": [
+            "Beyonce"
+        ]
+    },
+    {
+        "id": 14,
+        "title": "Dominatrix",
+        "launchYear": "2018",
+        "favorited": true,
+        "artists": [
+            "Karol Conka",
+            "Boss in Drama"
+        ]
+    },
+    {
+        "id": 15,
+        "title": "Dynamite",
+        "launchYear": "2020",
+        "favorited": true,
+        "artists": [
+            "BTS"
+        ]
+    },
+    {
+        "id": 16,
+        "title": "Lud Session",
+        "launchYear": "2021",
+        "favorited": true,
+        "artists": [
+            "Ludmilla",
+            "Gloria Groove"
+        ]
+    },
+    {
+        "id": 17,
+        "title": "Rave de Favela",
+        "launchYear": "2020",
+        "favorited": true,
+        "artists": [
+            "Anitta",
+            "Mc Lan",
+            "Major Lazer",
+            "Beam"
+        ]
+    },
+    {
+        "id": 18,
+        "title": "Cachorraz Kamikaze",
+        "launchYear": "2019",
+        "favorited": true,
+        "artists": [
+            "Tasha & Tracie",
+            "Ashira"
+        ]
+    },
+    {
+        "id": 19,
+        "title": "Maserati",
+        "launchYear": "2022",
+        "favorited": true,
+        "artists": [
+            "Urias",
+            "Monna Brutal",
+            "Ebony"
+        ]
+    }
+]

@@ -1,0 +1,56 @@
+[{
+    "id": 1,
+    "name": "Quero ser dev",
+    "podcaster": "Simara Conceicao",
+    "topic": "tecnologia",
+    "stars": 5
+},
+
+{
+    "id": 2,
+    "name": "Quanto vale essa historia",
+    "podcaster": "Bianca Dellafancy",
+    "topic": "relatos",
+    "stars": 5
+},
+
+{
+    "id": 3,
+    "name": "Para tudo",
+    "podcaster": "Lorelay Fox",
+    "topic": "humor",
+    "stars": 5
+},
+
+{
+    "id": 4,
+    "name": "Nao inviabilize",
+    "podcaster": "Deia Freitas",
+    "topic": "contos",
+    "stars": 5
+},
+
+{
+    "id": 5,
+    "name": "Pretas na rede",
+    "podcaster": "Gabriela Santos",
+    "topic": "feminismo",
+    "stars": 5
+},
+
+{
+    "id": 6,
+    "name": "Santissima trindade das perucas",
+    "podcaster": "Duda Dello Russo",
+    "topic": "humor",
+    "stars": 5
+},
+
+{
+    "id": 7,
+    "name": "Chicotadas",
+    "podcaster": "Ada",
+    "topic": "sexualidade",
+    "stars": 5
+}
+]
