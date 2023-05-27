@@ -1,13 +1,13 @@
 const express = require('express')
-const songsRouter = express.Router()
-const songsController = require('../controllers/songsController.js')
+const songRouter = express.Router()
+const songController = require('../controllers/songController.js')
 
-songsRouter.post('/url', songsController.get)
-songsRouter.get('/url', songsController.get)
-songsRouter.get('/url', songsController.get)
-songsRouter.get('/url', songsController.get)
-songsRouter.delete('/url', songsController.get)
-songsRouter.put('/url', songsController.get)
-songsRouter.patch('/url', songsController.get)
+songRouter.post('/url', songController.get)
+songRouter.get('/url', songController.get)
+songRouter.get('/url', songController.get)
+songRouter.get('/url', songController.get)
+songRouter.delete('/url', songController.get)
+songRouter.put('/url', songController.get)
+songRouter.patch('/url', songController.get)
 
 module.exports = songRouter

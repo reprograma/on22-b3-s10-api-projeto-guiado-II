@@ -1,10 +1,10 @@
 const express = require('express')
 const app = express()
-const songRoutes = require('./routes/songssRoutes')
-const podcastRoutes = require('./routes/podcastsRoutes')
+const songRouter = require('./routes/songsRoutes')
+const podcastRouter = require('./routes/podcastsRoutes')
 
 app.use(express.json())
-app.use('/songs', songRoutes)
-app.use('/podcasts', podcastRoutes)
+app.use('/songs', songRouter)
+app.use('/podcasts', podcastRouter)
 
 module.exports = app
