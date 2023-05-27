@@ -1,0 +1,31 @@
+{
+  "name": "api-project",
+  "version": "1.0.0",
+  "description": "class project about developing APIs using node.js.",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nearlyerika/on22-b3-s10-api-projeto-guiado-II.git"
+  },
+  "keywords": [
+    "javascript",
+    "node",
+    "express",
+    "api"
+  ],
+  "author": "nearlyerika",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nearlyerika/on22-b3-s10-api-projeto-guiado-II/issues"
+  },
+  "homepage": "https://github.com/nearlyerika/on22-b3-s10-api-projeto-guiado-II#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
