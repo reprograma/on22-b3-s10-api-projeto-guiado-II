@@ -1,0 +1,425 @@
+- Repositorio:
+ 
+https://github.com/reprograma/on22-b3-s10-api-projeto-guiado-II
+
+*Package*
+
+npm init -y
+
+*Express.js - node_modules*
+
+npm i express cors --save
+
+*Nodemon*
+
+npm i -D nodemon
+
+não esquecer do .gitignore e de colocar dentro dele o node_modules/
+
+
+_______________________________________________________________________________________________________________________________________________________________
+
+O server.js como está:
+
+
+const app = require("./reprogramafy/src/app")
+
+const PORT = 4444
+
+//iniciando o servidor
+app.listen(PORT, () => {
+    console.log(`Seu servidor está na porta: ${PORT}`)
+}) 
+
+
+_______________________________________________________________________________________________________________________________________________________________
+
+O app.js como está:
+
+
+const express = require("express") //importando o express
+const app = express() // executo o express
+app.use(express.json()) // uso o bodyparser
+
+const songsRoutes = require("./routes/songsRoutes") //importando as músicas
+app.use("/reprogramafy/playlist", songsRoutes) //criei uma rota raiz pro rotas
+
+const podcastsRoutes = require("./routes/podcastsRoutes") //importando os podcasts
+app.use("/reprogramafy/podcasts", podcastsRoutes) //criei uma rota raiz pro rotas podcasts
+
+
+module.exports = app // exportando para usar o server.js
+
+
+_______________________________________________________________________________________________________________________________________________________________
+
+o songRoutes.js como está:
+
+
+const controllerSongs = require("../controllers/songsController")
+const express = require("express")
+const router = express.Router()
+
+//router.metodo http (rota/função)
+ 
+router.get("/library", controllerSongs.getAllSongs)
+router.get("/songs/:id", controllerSongs.getSongsByID)
+router.get("/artists", controllerSongs.getArtists)
+router.post("/add", controllerSongs.addSong)
+router.put("/update/:id", controllerSongs.updateSong)
+router.delete("/delete/:id", controllerSongs.deleteSong)
+router.patch("/favorited/:id", controllerSongs.updateFav)
+
+module.exports = router
+
+
+_______________________________________________________________________________________________________________________________________________________________
+
+
+o podcastsRoutes.js como está:
+
+
+const controllerPodcasts = require("../controllers/podcastsController")
+const express = require("express")
+const router = express.Router()
+
+router.get("/library", controllerPodcasts.getAllPodcasts)
+router.get("/library/topic", controllerPodcasts.getTopics)
+router.post("/add", controllerPodcasts.addPodcasts)
+router.patch("/change/:id", controllerPodcasts.updatePodcasts)
+router.delete("/delete/:id", controllerPodcasts.deletePodcasts)
+
+
+module.exports = router
+
+
+
+_______________________________________________________________________________________________________________________________________________________________
+
+meu songsController.js como está:
+
+
+
+const reprogramafySongs = require("../models/songs.json")
+
+const getAllSongs = (request, response) => {
+    try {
+        response.status(200).json([{
+            songs: reprogramafySongs
+        }])
+    } catch (error) {
+        response.status(500).send([{
+            message: "Erro no server."
+        }])
+    }
+}
+
+const getSongsByID = (request, response) => {
+    const songsRequest = request.params.id
+    const songFilter = reprogramafySongs.filter(song => song.id == songsRequest)
+
+    if(songFilter.length > 0) {
+        response.status(200).send(songFilter)
+    } else {
+        response.status(404).send([{
+            message: "Não foi encontrado."
+        }])
+    }
+}
+
+const getArtists = (request, response) => {
+    let artistsRequest = request.query.artists.toLowerCase()
+    let artistsFilter = reprogramafySongs.filter((song) => {
+        artistsLowerCase = song.artists.map((artistsArray) => artistsArray.toLowerCase())
+        return artistsLowerCase.includes(artistsRequest)
+    })
+    console.log(artistsFilter)
+    if (artistsFilter.length > 0) {
+        response.status(200).send(artistsFilter)
+    } else {
+        response.status(404).send([{
+            message: "Artista não encontrado."
+        }])
+    }
+}
+
+const addSong = (request, response) => {
+    try {
+        let titleRequest = request.body.title
+        let launchYearRequest = request.body.launchYear
+        let favoritedRequest = request.body.favorited
+        let artistsRequest = request.body.artists
+
+        let newSong = {
+            id: Math.floor(Date.now() * Math.random()).toString(36),
+            title: titleRequest,
+            launchYear: launchYearRequest,
+            favorited: favoritedRequest,
+            artists: artistsRequest,
+        } 
+        reprogramafySongs.push(newSong)
+        response.status(201).json([{
+            message: "Nova música cadastrada",
+            newSong
+        }])
+
+    } catch (error) {
+        console.log(error)
+        response.status(500).send([{
+            message: "Erro interno ao cadastrar."
+        }])
+    }
+}
+
+const updateSong = (request, response) => {
+    const idRequest = request.params.id
+    let songRequest = request.body
+    let findSong = reprogramafySongs.findIndex((song) => song.id == idRequest)
+
+    if (reprogramafySongs.splice(findSong, 1, songRequest)) {
+        response.status(200).json([{
+            message: "Música atualizada com sucesso.",
+            reprogramafySongs
+        }])
+    } else {
+        response.status(404).send([{
+            messagem: "Música não encontrada."
+        }])
+    }
+}
+
+const deleteSong = (request, response) => {
+    const idRequest = request.params.id 
+    const findSong = reprogramafySongs.findIndex((song) => song.id == idRequest)
+    reprogramafySongs.splice(findSong, 1)
+    if (findSong) {
+        response.status(200).json([{
+            message: "A musica selecionada foi deletada.",
+            "música deletada": idRequest, reprogramafySongs
+        }])
+    } else {
+        response.status(404).send([{
+            message: "Musica não deletada."
+        }])
+    }
+}
+
+const updateFav = (request, response) =>{
+    const idRequest = request.params.id 
+    const favoritedRequest = request.body.favorited 
+    favoritedFind = reprogramafySongs.find((song) => song.id == idRequest) 
+
+    if (favoritedFind) {
+        favoritedFind.favorited = favoritedRequest,
+        response.status(200).json([{
+            message: "Classificação atualizada com Sucesso."
+        }])
+    } else {
+        response.status(404).json([{
+            message: "Classificação não atualizada."
+        }])
+    }
+}
+
+module.exports = {
+    getAllSongs,
+    getSongsByID,
+    getArtists,
+    addSong,
+    updateSong,
+    deleteSong,
+    updateFav,
+   
+}
+
+
+
+
+_______________________________________________________________________________________________________________________________________________________________
+
+meu podcastsController.js como está:
+
+
+const reprogramafyPodcasts = require("../models/podcasts.json")
+
+const getAllPodcasts = (request, response) => {
+    try {
+        response.status(200).json([{
+            podcast: reprogramafyPodcasts
+        }])
+    } catch (error) {
+        response.status(500).send([{
+            message: "Erro no servidor."
+        }])
+    }
+}
+
+const getTopics = (request, response) => {
+    const topicRequest = request.query.topic
+    const topicFilter = reprogramafyPodcasts.filter((pods) => pods.topic.includes(topicRequest))
+    if (topicFilter.length > 0) {
+        response.status(200).send(topicFilter)
+    } else {
+        response.status(404).send([{
+            message: "Erro no servidor, Podcast não encontrado."
+        }])
+    }
+}
+
+const addPodcasts = (request, response) => {
+    try {
+        let nameRequest = request.body.name
+        let podcasterRequest = request.body.podcaster
+        let topicRequest = request.body.topic
+        let starsRequest = request.body.stars
+
+        let newPodcast = {
+            id: Math.floor(Date.now() * Math.random()).toString(36),
+            name: nameRequest,
+            podcaster: podcasterRequest,
+            topic: topicRequest,
+            stars: starsRequest,
+        }
+        reprogramafyPodcasts.push(newPodcast)
+        response.status(201).json([{
+            message: "Novo podcast cadastrado",
+            newPodcast
+        }])
+
+    } catch (error) {
+         console.log(error)
+        response.status(500).send([{
+            message: "Erro interno ao cadastrar podcast."
+        }])
+    }
+}
+
+const updatePodcasts = (request, response) => {
+    const idRequest = request.params.id 
+    const starsRequest = request.body.stars 
+    starsFind = reprogramafyPodcasts.find((podcast) => podcast.id == idRequest)
+
+    if (starsFind) {
+        starsFind.stars = starsRequest
+        response.status(200).json([{
+            message: "Classificação atualizada com sucesso.",
+            reprogramafyPodcasts
+        }])
+    } else {
+        response.status(404).json([{
+            message: "Não foi modificado."
+        }])
+    }
+}
+
+const deletePodcasts = (request, response) =>{
+    const idRequest = request.params.id
+    const indicePods = reprogramafyPodcasts.findIndex((podcast) => podcast.id == idRequest) 
+
+    reprogramafyPodcasts.splice(indicePods, 1)
+
+    if (indicePods) {
+        response.status(200).json([{
+            message: "O podcast foi deletado.",
+            "podcast deletado": idRequest, 
+            reprogramafyPodcasts
+        }])
+    } else {
+        res.status(404).send([{
+            message: "Podcast não deletado."
+        }])
+    }
+}
+module.exports = {
+    getAllPodcasts,
+    getTopics,
+    addPodcasts,
+    updatePodcasts,
+    deletePodcasts,
+}
+
+
+
+
+
+_______________________________________________________________________________________________________________________________________________________________
+
+MINHAS ROTAS NO POSTMAN:
+
+
+Rota getAllSongs: localhost:4444/reprogramafy/playlist/library
+
+Rota getAllPodcasts: localhost:4444/reprogramafy/podcasts/library
+
+Rota getSongsByID: localhost:4444/reprogramafy/playlist/songs/2
+
+Rota getArtists: localhost:4444/reprogramafy/playlist/artists?artists=Lady Gaga
+
+Rota getTopics: localhost:4444/reprogramafy/podcasts/library/topic?topic=tecnologia
+
+Rota POST addSong: localhost:4444/reprogramafy/playlist/add
+
+Modelo de música a colocar no Body => Raw => JSON: 
+
+{
+    "title": "Kill Bill",
+    "launchYear": "2023",
+    "favorited": true,
+    "artists": [
+        "SZA"
+        ]
+}
+
+Rota POST addPodcasts: localhost:4444/reprogramafy/podcasts/add
+
+Modelo de Podcast a colocar no Body => Raw => JSON:
+
+{
+    "name": "Big Bixa Brasil",
+    "podcaster": "Duda Dello Russo",
+    "topic": "humor",
+    "stars": 4
+}
+
+Rota PUT updateSong: localhost:4444/reprogramafy/playlist/update/43uun1ks
+
+Modelo de update Music a colocar dentro do BODY => RAW => JSON:
+
+{
+    "title": "Killer Gaia",
+    "launchYear": "2024",
+    "favorited": true,
+    "artists": [
+        "Gaia",
+        "Reprograma"
+        ]
+}
+
+Rota DELETE deleteSong: localhost:4444/reprogramafy/playlist/delete/19
+
+Rota PATCH updatePodcasts: localhost:4444/reprogramafy/podcasts/change/3 (obs: não esquecer de alterar o campo stars no body, como no exemplo a seguir)
+
+{
+                "id": 3,
+                "name": "Para tudo",
+                "podcaster": "Lorelay Fox",
+                "topic": "humor",
+                "stars": 4
+            }
+
+Rota DELETE deletePodcasts: localhost:4444/reprogramafy/podcasts/delete/2
+
+Rota PATCH updateFav: localhost:4444/reprogramafy/playlist/favorited/17 (obs: não esquecer de alterar o campo favorited no body para o oposto de como está, como no exemplo a seguir)
+
+{
+                "id": 17,
+                "title": "Rave de Favela",
+                "launchYear": "2020",
+                "favorited": false,
+                "artists": [
+                    "Anitta",
+                    "Mc Lan",
+                    "Major Lazer",
+                    "Beam"
+                ]
+            }
