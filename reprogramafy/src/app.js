@@ -1,10 +1,12 @@
 const express = require('express')
-const app = express()
-const songRouter = require('./routes/songsRoutes')
-const podcastRouter = require('./routes/podcastsRoutes')
 
+const app = express()
 app.use(express.json())
-app.use('/songs', songRouter)
-app.use('/podcasts', podcastRouter)
+
+const songRouter = require('./routes/songsRoutes')
+app.use('/reprogramafy/playlist', songRouter)
+
+const podcastRouter = require('./routes/podcastsRoutes')
+app.use('/reprogramafy/podcasts', podcastRouter)
 
 module.exports = app
