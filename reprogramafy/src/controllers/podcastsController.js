@@ -1,6 +1,6 @@
-const { json } = require('express')
+
 const podsJson = require('../models/podcasts.json')
-const { addSong } = require('./songsController')
+
 
 const getAllPods = (req,res) =>{
     try {
