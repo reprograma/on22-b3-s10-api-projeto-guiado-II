@@ -90,9 +90,9 @@ const updateSong = (req, res) =>{
 
 const deleteSong = (req, res) =>{
     const idRequest = req.params.id 
-    const songFilter = songsJson.findIndex((song) => song.id == idRequest)
-    songsJson.splice(songFilter, 1)
-    if (songFilter) {
+    const songFind = songsJson.findIndex((song) => song.id == idRequest)
+    songsJson.splice(songFind, 1)
+    if (songFind) {
         res.status(200).json([{
             message: "A musica selecionada foi deletada!!",
             "musica deletada": idRequest, 
@@ -113,7 +113,8 @@ const updateFav = (req, res) =>{
     if (favoritedFind) {
         favoritedFind.favorited = favoritedRequest,
         res.status(200).json([{
-            message: "Classificação atualizada com Sucesso!!"
+            message: "Classificação atualizada com Sucesso!!",
+        favoritedFind
         }])
     } else {
         res.status(404).json([{

@@ -12,16 +12,16 @@ const getAllPodcasts = (req,res)=>{
     }
 }
 
-const getTopics = (req, res) =>{ //add um tolowerCase
-    const topicRequest = req.query.topic;
-    const topicFilter = podsJson.filter((pods)=> pods.topic.includes(topicRequest))
+const getTopics = (req, res) =>{ //adicionei um tolowerCase
+    const topicRequest = req.query.topic.toLowerCase();
+    const topicFilter = podsJson.filter((pods)=> pods.topic.includes(topicRequest.toLowerCase()))
     if (topicFilter.length > 0) {
         res.status(200).send(topicFilter)
     } else {
         res.status(404).send([{
             message: "Podcast não encontrado!! / Not Found!!"
         }])
-    }
+    } 
 }
 
 const addPods = (req, res) => {

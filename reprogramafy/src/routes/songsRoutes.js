@@ -4,8 +4,8 @@ const express = require("express") // importa o express
 
 const router = express.Router() // funçãi de rotas do express
 
-// router.metodo http (rota, função)
- router.get("/library", songsController.getAllSongs);
+// router metodo http (rota, função)
+router.get("/library", songsController.getAllSongs);
 
 router.get("/songs/:id", songsController.getSongs);
 
