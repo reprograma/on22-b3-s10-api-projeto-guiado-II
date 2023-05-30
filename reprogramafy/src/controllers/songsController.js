@@ -42,7 +42,7 @@ const getAllSongs = (req, res) => {
   }
 }
 
-const getSong = (req, res) => {
+const getSongById = (req, res) => {
   const songRequest = req.params.id
   const songFilter = songsJson.filter((song) => song.id == songRequest)
 
@@ -126,7 +126,7 @@ const deleteSong = (req, res) => {
 module.exports = {
   addSong,
   getAllSongs,
-  getSong,
+  getSongById,
   getByArtists,
   updateSong,
   updateFav,
