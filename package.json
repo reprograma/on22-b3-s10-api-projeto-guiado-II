@@ -1,0 +1,28 @@
+{
+  "name": "on22-b3-s10-api-projeto-guiado-ii",
+  "version": "1.0.0",
+  "description": "<h1 align=\"center\">\r   <img src=\"assets/reprograma-fundos-claros.png\" alt=\"logo reprograma\" width=\"500\">\r </h1>",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anjinha-oliveira/on22-b3-s10-api-projeto-guiado-II.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anjinha-oliveira/on22-b3-s10-api-projeto-guiado-II/issues"
+  },
+  "homepage": "https://github.com/anjinha-oliveira/on22-b3-s10-api-projeto-guiado-II#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
