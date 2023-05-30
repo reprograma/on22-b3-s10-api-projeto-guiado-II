@@ -1,11 +1,15 @@
+// IMPORTS
 const express = require('express')
 const router = express.Router()
-const podcastController = require('../controllers/podcastsController.js')
+const podController = require('../controllers/podcastsController.js')
 
-router.post('/add', podcastController.addPodcast)
-router.get('/library', podcastController.getAllPods)
-router.get('/library/topic', podcastController.getTopics)
-router.patch('/update/:id', podcastController.updatePodcast)
-router.delete('/delete/:id', podcastController.deletePodcast)
+// ROUTES
+router.post('/add', podController.addPodcast)
+router.get('/library', podController.getAllPods)
+router.get('/podcast/:id', podController.getPodByName)
+router.get('/topic', podController.getPodByTopic)
+router.put('/update/:id', podController.updatePod)
+router.patch('/update-stars/:id', podController.updateStars)
+router.delete('/delete/:id', podController.deletePod)
 
 module.exports = router

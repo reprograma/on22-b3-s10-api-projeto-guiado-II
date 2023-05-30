@@ -1,5 +1,7 @@
+// IMPORTS
 const podsJson = require('../models/podcasts.json')
 
+// METHODS
 const addPodcast = (req, res) => {
   try {
     let nameRequest = req.body.name
@@ -7,7 +9,7 @@ const addPodcast = (req, res) => {
     let topicRequest = req.body.topic
     let starsRequest = req.body.stars
 
-    let newPodcast = {
+    let newPod = {
       id: Math.floor(Date.now() * Math.random()).toString(36),
       name: nameRequest,
       podcaster: podcasterRequest,
@@ -15,7 +17,7 @@ const addPodcast = (req, res) => {
       stars: starsRequest
     }
 
-    podsJson.push(newPodcast)
+    podsJson.push(newPod)
     res.status(201).json([{
       message: "Resource created!"
     }])
@@ -30,16 +32,33 @@ const addPodcast = (req, res) => {
 const getAllPods = (req, res) => {
   try {
     res.status(200).json([{
-      podcastsJson: podsJson
+      message: "OK!",
+      podcasts: podsJson
     }])
   } catch (err) {
-    res.status(500).send([{
-      message: 'Server Error!'
+    res.status(404).send([{
+      message: 'Not Found!'
     }])
   }
 }
 
-const getTopics = (req, res) => {
+const getPodByName = (req, res) => {
+  const podRequest = req.params.id.toLowerCase()
+  const foundPod = podsJson.find((pod) => pod.name.toLowerCase() == podRequest)
+
+  if (foundPod.name == podRequest) {
+    res.status(200).json([{
+      message: "OK!",
+      podcast: foundPod
+    }])
+  } else {
+    res.status(404).send([{
+      message: 'Not Found!'
+    }])
+  }
+}
+
+const getPodByTopic = (req, res) => {
   const topicRequest = req.query.topic
   const topicFilter = podsJson.filter((pods) => pods.topic.includes(topicRequest))
   if (topicFilter.length > 0) {
@@ -51,45 +70,67 @@ const getTopics = (req, res) => {
   }
 }
 
-const updatePodcast = (req, res) => {
+
+
+const updatePod = (req, res) => {
+  const idRequest = req.params.id
+  let podRequest = req.body
+  let podIndex = songsJson.findIndex((song) => song.id == idRequest)
+  songsJson.splice(podIndex, 1, podRequest)
+
+  if (podJson[podIndex] == podRequest) {
+    res.status(200).json([{
+      message: "Resource updated!"
+    }])
+  } else {
+    res.status(500).send([{
+      message: "Server Error!"
+    }])
+  }
+}
+
+const updateStars = (req, res) => {
   const idRequest = req.params.id
   let starsRequest = req.body.stars
-  let foundPod = podsJson.findIndex((podcast) => podcast.id == idRequest)
+  let podIndex = podsJson.findIndex((podcast) => podcast.id == idRequest)
 
-  if (foundPod) {
-    foundPod.stars = starsRequest
+  if (podIndex != -1) {
+    podsJson[podIndex].stars = starsRequest
     res.status(200).json([{
       message: "Resource updated!",
       podsJson
     }])
   } else {
-    res.status(404).send([{
+    res.status(500).send([{
       message: "Not Updated!"
     }])
   }
 }
 
-const deletePodcast = (req, res) => {
+const deletePod = (req, res) => {
   const idRequest = req.params.id
   const podIndex = podsJson.findIndex((podcast) => podcast.id == idRequest)
 
   podsJson.splice(podIndex, 1)
 
-  if (!podsJson[podIndex]) {
+  if (podsJson[podIndex].id != idRequest) {
     res.status(200).json([{
       message: "Resource deleted!"
     }])
   } else {
-    res.status(404).send([{
-      message: "Not Deleted!"
+    res.status(500).send([{
+      message: "Server Error!"
     }])
   }
 }
 
+// EXPORTS
 module.exports = {
   addPodcast,
   getAllPods,
-  getTopics,
-  updatePodcast,
-  deletePodcast
+  getPodByName,
+  getPodByTopic,
+  updatePod,
+  updateStars,
+  deletePod
 }

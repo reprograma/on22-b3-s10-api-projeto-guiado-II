@@ -1,5 +1,7 @@
+// IMPORTS
 const songsJson = require('../models/songs.json')
 
+// METHODS
 const addSong = (req, res) => {
   try {
     let titleRequest = req.body.title
@@ -22,7 +24,7 @@ const addSong = (req, res) => {
   } catch (err) {
     console.log(err)
     res.status(500).send([{
-      message: "Internal Error!"
+      message: "Server Error!"
     }])
   }
 }
@@ -30,11 +32,12 @@ const addSong = (req, res) => {
 const getAllSongs = (req, res) => {
   try {
     res.status(200).json([{
+      message: "OK!",
       songs: songsJson
     }])
   } catch (err) {
-    res.status(500).send([{
-      message: 'Server Error!'
+    res.status(404).send([{
+      message: 'Not found!'
     }])
   }
 }
@@ -52,7 +55,7 @@ const getSong = (req, res) => {
   }
 }
 
-const getArtist = (req, res) => {
+const getByArtists = (req, res) => {
   let artistsRequest = req.query.artists.toLowerCase()
   let artistsFilter = songsJson.filter((song) => {
     artistsLowerCase = song.artists.map((artistsArray) => artistsArray.toLowerCase())
@@ -72,57 +75,59 @@ const getArtist = (req, res) => {
 const updateSong = (req, res) => {
   const idRequest = req.params.id
   let songRequest = req.body
-  let foundSong = songsJson.findIndex((song) => song.id == idRequest)
+  let songIndex = songsJson.findIndex((song) => song.id == idRequest)
+  songsJson.splice(foundSong, 1, songRequest)
 
-  if (songsJson.splice(foundSong, 1, songRequest)) {
+  if (songsJson[songIndex] == songRequest) {
     res.status(200).json([{
       message: "Resource updated!"
     }])
   } else {
-    res.status(404).send([{
-      message: "Not Found!"
+    res.status(500).send([{
+      message: "Server Error!"
     }])
   }
 }
 
 const updateFav = (req, res) => {
   const idRequest = req.params.id 
-  const favoritedRequest = req.body.favorited
-  foundFavorited = songsJson.json((song) => song.id == idRequest)
+  const favRequest = req.body.favorited
+  songIndex = songsJson.findIndex((song) => song.id == idRequest)
 
-  if (foundFavorited) {
+  if (songIndex != -1) {
+    songsJson[songIndex].favorited = favRequest
     res.status(200).json([{
       message: "Resource updated!"
     }])
   } else {
-    res.status(404).send([{
-      message: "Not Found!"
+    res.status(500).send([{
+      message: "Server Error!"
     }])
   }
 }
 
 const deleteSong = (req, res) => {
   const idRequest = req.params.id
-  const foundSong = songsJson.findIndex((song) => song.id == idRequest)
+  const songIndex = songsJson.findIndex((song) => song.id == idRequest)
+  songsJson.splice(songIndex, 1)
 
-  songsJson.splice(foundSong, 1)
-
-  if (!songsJson[foundSong]) {
+  if (songsJson[songIndex].id != idRequest) {
     res.status(200).json([{
-      message: "Resource deleted!"
+      message: "Resource Deleted!"
     }])
   } else {
-    res.status(404).send([{
-      message: "Not Deleted!"
+    res.status(500).send([{
+      message: "Server Error!"
     }])
   }
 }
 
+// EXPORTS
 module.exports = {
   addSong,
   getAllSongs,
   getSong,
-  getArtist,
+  getByArtists,
   updateSong,
   updateFav,
   deleteSong
