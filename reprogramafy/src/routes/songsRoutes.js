@@ -8,8 +8,8 @@ router.get('/libary', songsController.getAllSongs); //Definindo rota
 router.get('/songs/:id', songsController.getSong);
 router.get('/artists', songsController.getArtist);
 router.post('/add', songsController.addSong);
-//router.put('/update/:id', songsController.updateSong);
-//router.delete('/delete/:id', songsController.deleteSong);
-//router.patch('/favorited/:id', songsController.updateFav);
+router.put('/update/:id', songsController.updateSong);
+router.delete('/delete/:id', songsController.deleteSong);
+router.patch('/favorited/:id', songsController.updateFav);
 
 module.exports = router

@@ -1,4 +1,4 @@
-const { request, response } = require('express')
+const { request, response, query } = require('express')
 const podsJson = require('../models/podcasts.json')
 
 const getAllPods = (request, response) => {
@@ -52,9 +52,47 @@ const addPods = (request, response) => {
     }
 }
 
+const updatePods = (request, response) => {
+    const id = request.params.id
+    const stars = request.body.stars
+    starsFind = podsJson.find((podcast) => podcast.id == id)
+
+    if (starsFind) {
+        starsFind.stars = stars
+        response.status(200).json([{
+            message: 'Classificação atualizada com sucesso',
+            podsJson
+        }])
+    } else {
+        response.status(404).json([{
+            message : 'Não foi modificado'
+        }])
+    }
+}
+
+const deletePods = (request, response) => {
+    const id = request.params.id
+    const index = podsJson.findIndex((podcast) => podcast.id == id)
+    podsJson.splice(index, 1)
+    if (index) {
+        response.status(200).json([{
+            message : 'O podecast foi deletado',
+            'podcast deletado': id,
+            podsJson
+        }])
+        
+    } else {
+        response.status(404).send([{
+            message: 'Podcast deletado'
+        }])
+    }
+}
+
 
 module.exports = {
     getAllPods,
     getTopics,
-    addPods
+    addPods,
+    updatePods,
+    deletePods
 }

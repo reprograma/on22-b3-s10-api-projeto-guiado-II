@@ -68,9 +68,67 @@ const addSong = (request, response) => {
     }
 }
 
+const updateSong = (request, response) => {
+    const id = request.params.id
+    let song = request.body
+    let findSong = songsJson.findIndex((song) => song.id == id)
+    
+    if (songsJson.slice(findSong, 1, song) > 0) {
+        response.status(200).json([{
+            message: 'Musica atualizada com sucesso!',
+            songsJson
+        }])
+    } else {
+        response.status(404).send([{
+            message: 'Musica não encontrada'
+        }])        
+    }
+}
+
+const deleteSong = (request, response) => {
+    const id = request.params.id
+    let findSong = songsJson.findIndex((song) => song.id ==id)
+
+    songsJson.splice(findSong, 1)
+    if (findSong) {
+        response.status(200).json([{
+            message: 'A musica adicionada foi deletada',
+            'musica deletada': id,
+            songsJson
+        }])
+        
+    } else {
+        response.status(404).send([{
+            message: 'Musica não deletada'
+        }])
+    }
+}
+
+const updateFav = (request, response) => {
+    const id = request.params.id
+    const favorited = request.body.favorited
+    const favoritedFind = songsJson.find((song) => song.id == id)
+
+    if (favoritedFind) {
+        favoritedFind.favorited = favorited
+        response.status(200).json([{
+            message: 'classificação atualizada com sucesso'
+        }])
+        
+    } else {
+        response.status(404).json([{
+            message: 'Não quero hoje'
+        }])
+        
+    }
+}
+
 module.exports = {
     getAllSongs,
     getSong,
     getArtist,
-    addSong
+    addSong,
+    updateSong,
+    deleteSong,
+    updateFav
 }
