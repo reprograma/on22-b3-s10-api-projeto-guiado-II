@@ -4,27 +4,36 @@ const podsJson = require('../models/podcasts.json')
 // METHODS
 const addPodcast = (req, res) => {
   try {
-    let nameRequest = req.body.name
-    let podcasterRequest = req.body.podcaster
-    let topicRequest = req.body.topic
-    let starsRequest = req.body.stars
+    let nameReq = req.body.name
+    let casterReq = req.body.podcaster
+    let topicReq = req.body.topic
+    let starsReq = req.body.stars
 
     let newPod = {
       id: Math.floor(Date.now() * Math.random()).toString(36),
-      name: nameRequest,
-      podcaster: podcasterRequest,
-      topic: topicRequest,
-      stars: starsRequest
+      name: nameReq,
+      podcaster: casterReq,
+      topic: topicReq,
+      stars: starsReq
     }
 
-    podsJson.push(newPod)
-    res.status(201).json([{
-      message: "Resource created!"
+    if ((podsJson.findIndex((podcast) => podcast.name == nameReq)) == -1) {
+      podsJson.push(newPod)
+      res.status(201).json([{
+        message: "Resource Created!",
+        podsJson
+      }])
+    }
+    
+    res.status(200).send([{
+        message: "Not Modified!",
+        podsJson
     }])
+    
   } catch (err) {
     console.log(err)
     res.status(500).send([{
-      message: "Internal Error!"
+      message: "Server Error!"
     }])
   }
 }
@@ -43,10 +52,10 @@ const getAllPods = (req, res) => {
 }
 
 const getPodByName = (req, res) => {
-  const podRequest = req.params.id.toLowerCase()
-  const foundPod = podsJson.find((pod) => pod.name.toLowerCase() == podRequest)
+  const nameRequest = req.params.name.toLowerCase()
+  const foundPod = podsJson.find((podcast) => podcast.name.toLowerCase() == nameRequest)
 
-  if (foundPod.name == podRequest) {
+  if (foundPod.name.toLowerCase() == nameRequest) {
     res.status(200).json([{
       message: "OK!",
       podcast: foundPod
@@ -59,10 +68,12 @@ const getPodByName = (req, res) => {
 }
 
 const getPodByTopic = (req, res) => {
-  const topicRequest = req.query.topic
-  const topicFilter = podsJson.filter((pods) => pods.topic.includes(topicRequest))
-  if (topicFilter.length > 0) {
-    res.status(200).send(topicFilter)
+  const topicReq = req.query.topic
+  const filterByTopic = podsJson.filter((podcast) => podcast.topic.includes(topicReq))
+  if (filterByTopic.length > 0) {
+    res.status(200).json([{
+      filterByTopic
+    }])
   } else {
     res.status(404).send([{
       message: "Not found!"
@@ -75,12 +86,15 @@ const getPodByTopic = (req, res) => {
 const updatePod = (req, res) => {
   const idRequest = req.params.id
   let podRequest = req.body
-  let podIndex = songsJson.findIndex((song) => song.id == idRequest)
-  songsJson.splice(podIndex, 1, podRequest)
+  let podIndex = podsJson.findIndex((podcast) => podcast.id == idRequest)
+  podRequest.id = +idRequest
+  podsJson.splice(podIndex, 1, podRequest)
 
-  if (podJson[podIndex] == podRequest) {
+
+  if (podsJson[podIndex] == podRequest) {
     res.status(200).json([{
-      message: "Resource updated!"
+      message: "Resource updated!",
+      podsJson
     }])
   } else {
     res.status(500).send([{
@@ -93,8 +107,8 @@ const updateStars = (req, res) => {
   const idRequest = req.params.id
   let starsRequest = req.body.stars
   let podIndex = podsJson.findIndex((podcast) => podcast.id == idRequest)
-
-  if (podIndex != -1) {
+  console.log(starsRequest)
+  if ((podIndex != -1) && (starsRequest > 0) && (starsRequest <= 5)) {
     podsJson[podIndex].stars = starsRequest
     res.status(200).json([{
       message: "Resource updated!",
@@ -108,18 +122,19 @@ const updateStars = (req, res) => {
 }
 
 const deletePod = (req, res) => {
-  const idRequest = req.params.id
-  const podIndex = podsJson.findIndex((podcast) => podcast.id == idRequest)
+  let idRequest = req.params.id
+  let podIndex = podsJson.findIndex((podcast) => podcast.id == idRequest)
 
   podsJson.splice(podIndex, 1)
 
-  if (podsJson[podIndex].id != idRequest) {
+if (podIndex != -1) {
+    podsJson.splice(podIndex, 1)
     res.status(200).json([{
-      message: "Resource deleted!"
+    message: "Resource deleted!"
     }])
-  } else {
-    res.status(500).send([{
-      message: "Server Error!"
+  } else if (podIndex = -1) { 
+    res.status(404).send([{
+      message: "Not Found!"
     }])
   }
 }

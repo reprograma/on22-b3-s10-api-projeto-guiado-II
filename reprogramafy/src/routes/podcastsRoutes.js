@@ -6,7 +6,7 @@ const podController = require('../controllers/podcastsController.js')
 // ROUTES
 router.post('/add', podController.addPodcast)
 router.get('/library', podController.getAllPods)
-router.get('/podcast/:id', podController.getPodByName)
+router.get('/:name', podController.getPodByName)
 router.get('/topic', podController.getPodByTopic)
 router.put('/update/:id', podController.updatePod)
 router.patch('/update-stars/:id', podController.updateStars)

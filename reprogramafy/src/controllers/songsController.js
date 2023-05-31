@@ -4,23 +4,32 @@ const songsJson = require('../models/songs.json')
 // METHODS
 const addSong = (req, res) => {
   try {
-    let titleRequest = req.body.title
-    let launchYearRequest = req.body.launchYear
-    let favoritedRequest = req.body.favorited
-    let artistsRequest = req.body.artists
+    let titleReq = req.body.title
+    let yearReq = req.body.launchYear
+    let favReq = req.body.favorited
+    let artistsReq = req.body.artists
 
     let newSong = {
       id: Math.floor(Date.now() * Math.random()).toString(36),
-      title: titleRequest,
-      launchYear: launchYearRequest,
-      favorited: favoritedRequest,
-      artists: artistsRequest
+      title: titleReq,
+      launchYear: yearReq,
+      favorited: favReq,
+      artists: artistsReq
     }
 
-    songsJson.push(newSong)
-    res.status(201).json([{
-      message: "Resource created!"
+    if ((songsJson.findIndex((song) => song.title == titleReq)) == -1) {
+      songsJson.push(newSong)
+      res.status(201).json([{
+        message: "Resource Created!",
+        songsJson
+      }])
+    }
+    
+    res.status(200).send([{
+        message: "Not Modified!",
+        songsJson
     }])
+    
   } catch (err) {
     console.log(err)
     res.status(500).send([{
@@ -76,11 +85,13 @@ const updateSong = (req, res) => {
   const idRequest = req.params.id
   let songRequest = req.body
   let songIndex = songsJson.findIndex((song) => song.id == idRequest)
-  songsJson.splice(foundSong, 1, songRequest)
+  songRequest.id = +idRequest
+  songsJson.splice(songIndex, 1, songRequest)
 
   if (songsJson[songIndex] == songRequest) {
     res.status(200).json([{
-      message: "Resource updated!"
+      message: "Resource updated!",
+      songsJson
     }])
   } else {
     res.status(500).send([{
@@ -111,13 +122,14 @@ const deleteSong = (req, res) => {
   const songIndex = songsJson.findIndex((song) => song.id == idRequest)
   songsJson.splice(songIndex, 1)
 
-  if (songsJson[songIndex].id != idRequest) {
+if (songIndex !== -1 && songsJson[songIndex].id) {
+    songsJson.splice(songIndex, 1)
     res.status(200).json([{
       message: "Resource Deleted!"
     }])
   } else {
-    res.status(500).send([{
-      message: "Server Error!"
+    res.status(404).send([{
+      message: "Not Found!"
     }])
   }
 }
