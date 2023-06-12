@@ -1,11 +1,8 @@
-const { response } = require('express')
 const songsJson = require('../models/songs.json') //importando arquivo json
 
 const getAllSongs = (request, response) => {
     try {
-        response.status(200).json([{
-            songs: songsJson
-        }])
+        response.status(200).json(Song.objects.all())
     } catch (error) {
         response.status(500).send([{ //status 500 é de erro do servidor
             message: 'Erro no servidor'
@@ -40,26 +37,30 @@ const getArtist = (request, response) => {
         }])
     }
 }
+const Song = {
+    objects: {
+        _songs: songsJson,
+        create: (songData) => {
+            const lastSong = Song.objects._songs[Song.objects._songs.length -1]
+            const id = lastSong.id + 1
+            songData.id = id
+
+            Song.objects._songs.push(songData)
+            return songData
+        },
+        
+    all: () => {
+        return Song.objects._songs
+    } 
+
+    }
+
+}
 
 const addSong = (request, response) => {
     try {
-        let title = request.body.title
-        let launchYear = request.body.launchYear
-        let favorited = request.body.favorited
-        let artist = request.body.artist
-        
-        let newSong = {
-            id: Math.floor(Date.now() * Math.random()).toString(36),
-            title: title,
-            launchYear: launchYear,
-            favorited: favorited,
-            artist: artist
-        };
-        songsJson.push(newSong)
-        response.status(201).json([{
-            message: 'Nova música cadastrada'
-        }])
-
+        const newSong = Song.objects.create(request.body)
+        response.status(201).json(newSong)
     } catch (error) {
         console.log(error)
         response.status(500).send([{
