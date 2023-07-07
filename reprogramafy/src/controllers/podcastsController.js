@@ -1,26 +1,27 @@
-const pods = require("../models/podcasts.json");
+const podsJson = require("../models/podcasts.json");
 
 const getAllPods = (request, response) => {
   try {
     response.status(200).json([
       {
-        Podcast: pods,
+        podCast: podsJson,
       },
     ]);
   } catch (err) {
-    response.status(500).send({ message: "Erro no server" });
+    response.status(500).send({ 
+      message: "Erro no server" });
   }
 };
 
 const getTopics = (request, response) => {
   const topicRequest = request.query.topic;
-  const topicFilter = pods.filter((pods) => pods.topic.includes(topicRequest));
+  const topicFilter = podsJson.filter((pods) => pods.topic.includes(topicRequest));
   if (topicFilter.length > 0) {
     response.status(200).send(topicFilter);
   } else {
     response.status(404).send([
       {
-        message: "Topico não encontrado",
+        message: "Not found",
       },
     ]);
   }
@@ -41,7 +42,7 @@ const addPods = (request, response) => {
       stars: starsRequest,
     };
 
-    pods.push(newPodcast);
+    podsJson.push(newPodcast);
     response.status(201).json([
       {
         message: "Novo podcast cadastrado",
@@ -58,7 +59,7 @@ const addPods = (request, response) => {
   }
 };
 
-const atualizarPods = (request, response) => {
+const updatePods = (request, response) => {
   const idRequest = request.params.id;
   const starsRequest = request.body.stars;
   starsFilter = pods.find((podcast) => podcast.id == idRequest);
@@ -67,14 +68,14 @@ const atualizarPods = (request, response) => {
     starsFilter.stars = starsRequest;
     response.status(200).json([
       {
-        message: "Classificação atualizada com sucesso, honey",
+        message: "Classificação atualizada com sucesso",
         pods,
       },
     ]);
   } else {
     response.status(404).json([
       {
-        message: "Não foi modificado garotah sonsa",
+        message: "Não foi modificado",
       },
     ]);
   }
@@ -107,7 +108,7 @@ module.exports = {
   getAllPods,
   getTopics,
   addPods,
-  atualizarPods,
+  updatePods,
   deletePods,
 };
 

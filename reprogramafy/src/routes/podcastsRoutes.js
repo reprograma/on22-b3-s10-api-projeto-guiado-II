@@ -1,4 +1,4 @@
-const controller = require("../controllers/podcastsController");
+const podcastsController = require("../controllers/podcastsController");
 
 const express = require("express");
 
@@ -7,10 +7,10 @@ const router = express.Router();
 
 // router. metodo http (rota, funcao)
 
-router.get("/library", controller.getAllPods);
-router.get("/library/topic", controller.getTopics);
-router.post("/add", controller.addPods);
-router.patch("/update/:id", controller.atualizarPods);
-router.delete("/delete/:id", controller.deletePods);
+router.get("/library", podcastsController.getAllPods);
+router.get("/library/topic", podcastsController.getTopics);
+router.post("/add", podcastsController.addPods);
+router.patch("/update/:id", podcastsController.updatePods);
+router.delete("/delete/:id", podcastsController.deletePods);
 
 module.exports = router;
