@@ -1,16 +1,12 @@
-const express = require("express"); //importo o express
+const express = require("express"); //importa o express
+const app = express(); // executa o express
+app.use(express.json()); // udo o body parse
 
-const app = express(); // executo o express
 
-app.use(express.json()); // uso o body parse
+const songsRoutes = require("./routes/podcastsRoutes"); //importa a rota musicas
+app.use("/reprogramafy/podcasts", songsRoutes); // define rotas padão musicas
 
-// importe da continuação de rotas podcast
-const podRoutes = require("./routes/podcastsRoutes");
+const podcastsRoutes = require("./routes/songsRoutes"); // importa as rotas podCast
+app.use("/reprogramafy/playlist", podcastsRoutes);// define ratas padrão podCast
 
-app.use("/reprogramafy/podcasts", podRoutes); // crio uma rota raiz
-
-const songsRoutes = require("./routes/songsRoutes");
-
-app.use("/reprogramafy/playlist", songsRoutes);
-// exportando para usar o server.js
 module.exports = app;

@@ -1,19 +1,19 @@
-const controller = require("../controllers/songsController");
+const songsController = require("../controllers/songsController"); // importa o controller
 
-const express = require("express");
+const express = require("express"); // importa o express
 
-// funcao de rotas de express
-const router = express.Router();
 
-// router. metodo http (rota, funcao)
+const router = express.Router(); // funcao de rotas de express
 
-router.get("/library", controller.getAllMusic);
-router.get("/library/:id", controller.getMusic);
-router.get("/artists", controller.getArtist);
-router.post("/add", controller.addMusic);
-router.put("/:id", controller.updateMusic);
-router.delete("/delete/:id", controller.deleteMusic);
-router.patch("/favorited/:id", controller.updateFav);
+ //router. metodo http (rota, funcao)
+
+router.get("/library", songsController.getAllSongs);
+router.get("/songs/:id", songsController.getSongs);
+router.get("/artists", songsController.getArtist);
+router.post("/add", songsController.addSong);
+router.put("/:id", songsController.updateSongs);
+router.delete("/delete/:id", songsController.deleteSongs);
+router.patch("/favorited/:id", songsController.updateFav);
 
 module.exports = router;
 

@@ -1,27 +1,28 @@
-const music = require("../models/songs.json");
+const songsJson = require("../models/songs.json");
 
-const getAllMusic = (request, response) => {
+const getAllSongs = (request, response) => {
   try {
     response.status(200).json([
       {
-        Musicas: music,
+        songs: songsJson,
       },
     ]);
-  } catch (err) {
-    response.status(500).send({ message: "Erro no server" });
+  } catch (error) {
+    response.status(500).send({ 
+      message: "Erro no server" });
   }
 };
 
-const getMusic = (request, response) => {
-  const musicRequest = request.params.id;
-  const musicFilter = music.filter((music) => music.id == musicRequest);
+const getSongs = (request, response) => {
+  const songsRequest = request.params.id;
+  const songsFilter = songsJson.filter((song) => song.id == songsRequest);
 
-  if (musicFilter.length > 0) {
-    response.status(200).send(musicFilter);
+  if (songsFilter.length > 0) {
+    response.status(200).send(songsFilter);
   } else {
     response.status(404).send([
       {
-        message: "Musica não encontrada",
+        message: "Not found!",
       },
     ]);
   }
@@ -30,11 +31,11 @@ const getMusic = (request, response) => {
 const getArtist = (request, response) => {
   let artistsRequest = request.query.artists.toLowerCase();
 
-  let artistsFilter = music.filter((musica) => {
-    artistasLowerCase = musica.artists.map((artistasArray) =>
-      artistasArray.toLowerCase()
+  let artistsFilter = songsJson.filter((song) => {
+    artistsLowerCase = song.artists.map((artistsArray) =>
+      artistsArray.toLowerCase()
     );
-    return artistasLowerCase.includes(artistsRequest);
+    return artistsLowerCase.includes(artistsRequest);
   });
   console.log(artistsFilter);
   if (artistsFilter.length > 0) {
@@ -42,20 +43,20 @@ const getArtist = (request, response) => {
   } else {
     response.status(404).send([
       {
-        message: "Artista não encontrado",
+        message: "Not found!",
       },
     ]);
   }
 };
 
-const addMusic = (request, response) => {
+const addSong = (request, response) => {
   try {
     let titleRequest = request.body.title;
     let launchYearRequest = request.body.launchYear;
     let favoritedRequest = request.body.favorited;
     let artistsRequest = request.body.artists;
 
-    let newMusic = {
+    let newSong = {
       id: Math.floor(Date.now() * Math.random()).toString(36),
       title: titleRequest,
       launchYear: launchYearRequest,
@@ -63,11 +64,11 @@ const addMusic = (request, response) => {
       artists: artistsRequest,
     };
 
-    music.push(newMusic);
+    songsJson.push(newSong);
     response.status(201).json([
       {
         message: "Nova musica cadastrada",
-        newMusic,
+        newSong,
       },
     ]);
   } catch (err) {
@@ -80,13 +81,13 @@ const addMusic = (request, response) => {
   }
 };
 
-const updateMusic = (request, response) => {
+const updateSongs = (request, response) => {
   const idRequest = request.params.id;
-  let musicRequest = request.body;
+  let songRequest = request.body;
 
-  let indexEncontrado = music.findIndex((musica) => musica.id == idRequest);
+  let indexEncontrado = songsJson.findIndex((musica) => musica.id == idRequest);
 
-  if (music.splice(indexEncontrado, 1, musicRequest)) {
+  if (song.splice(indexEncontrado, 1, songRequest)) {
     response.status(200).json([
       {
         message: "Musica atualizada com sucesso",
@@ -102,7 +103,7 @@ const updateMusic = (request, response) => {
   }
 };
 
-const deleteMusic = (request, response) => {
+const deleteSongs = (request, response) => {
   const idRequest = request.params.id;
   const indiceMusic = music.findIndex((musica) => musica.id == idRequest);
 
@@ -149,11 +150,11 @@ const updateFav = (request, response) => {
 };
 
 module.exports = {
-  getAllMusic,
+  getAllSongs,
   getArtist,
-  getMusic,
-  addMusic,
-  updateMusic,
-  deleteMusic,
+  getSongs,
+  addSong,
+  updateSongs,
+  deleteSongs,
   updateFav
 };
