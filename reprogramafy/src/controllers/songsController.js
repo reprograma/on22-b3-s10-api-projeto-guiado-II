@@ -1,4 +1,151 @@
-const music = require("../models/songs.json");
+const songsJson = require("../models/songs.json")
+
+const getAllSongs = (req, res) =>{
+  try {
+    res.status(200).json([{
+      songs: songsJson
+    }])
+  } catch (error) {
+    res.status(500).send([{
+      message: "erro no server"
+    }])
+  }
+}
+
+  const getSong = (req, res) => {
+    const songRequest = req.params.id;
+    const songFilter = songsJson.filter((songs) => songs.id == songRequest);
+  
+    if (songFilter.length > 0) {
+      res.status(200).send(songFilter);
+    } else {
+      res.status(404).send([
+        {
+          message: "Musica não encontrada",
+        },
+      ]);
+    }
+  };
+
+const getArtist = (req, res) => {
+  let artistRequest = req.query.artists.toLowerCase()
+  let artistFilter = songsJson.filter((songs) => {
+    artistsLowerCase = songs.artists.map(artistsArray.toLowerCase())
+    return artistsLowerCase.includes(artistRequest)
+ })
+
+   console.log(artistFilter);
+
+   if(artistFilter.length > 0) {
+    res.status(200).send(artistFilter)
+   }else{
+     res.status(404).send([[{
+      message: "not found"
+     }]])
+   }
+  }
+
+  const addSong = (req, res) => {
+    try {
+      let titleRequest = req.body.title;
+      let launchYearRequest = req.body.launchYear
+      let favoritedRequest = req.body.favorited
+      let artistsRequest = req.body.artists
+
+      let newSong = {
+        id: Math.floor(Date.now() * Math.random()).toString(36),
+        title: titleRequest,
+        launchYear: launchYearRequest,
+        favorited: favoritedRequest,
+        artists: artistsRequest
+
+
+      }
+
+
+      songsJson.push(newSong)
+      res.status(201).json([{
+        message: "nova musica ! :D"
+      }])
+    } catch (error) {
+      console.log(error)
+      res.status(500).send([{
+        message: "error at the registering process"
+      }])
+    }
+  }
+  const updateSong = (req, res) => {
+    const idRequest = req.params.id
+    const songRequest = req.body
+    let findSong = reprogramafySongs.findIndex((song) => song.id == idRequest)
+
+    if (reprogramafySongs.splice(findSong, 1, songRequest)) {
+        res.status(200).json([{
+            message: "musica atualizada com sucesso",
+            reprogramafySongs
+        }])
+    } else {
+        res.status(404).json([{
+            message: "musica não encontrada"
+        }])
+    }
+}
+
+
+const deleteSong = (req, res) => {
+    const idRequest = req.params.id
+    const findSong = reprogramafySongs.findIndex((song) => song.id == idRequest)
+    reprogramafySongs.splice(findSong, 1)
+    if (findSong) {
+        res.status(200).json([{
+            message: "musica deletada!",
+            "música deletada": idRequest, reprogramafySongs
+        }])
+    } else {
+        res.status(404).send([{
+            message: "Musica não deletada!"
+        }])
+    }
+}
+
+const updateFav = (req, res) => {
+    const idRequest = req.params.id
+    const favoritedRequest = req.body.favorited
+    favoritedFind = reprogramafySongs.find((song) => song.id == idRequest)
+
+    if (favoritedFind) {
+        favoritedFind.favorited = favoritedRequest,
+            res.status(200).json([{
+                message: "Classificação atualizada :D"
+            }])
+    } else {
+        res.status(404).json([{
+            message: "Classificação não atualizada :("
+        }])
+    }
+}
+
+
+
+
+module.exports = {
+    getAllSongs,
+    getSong,
+    getArtist,
+    addSong,
+    updateSong,
+    deleteSong,
+    updateFav
+}
+
+
+
+
+
+
+
+
+/* const music = require("../models/songs.json");
 
 const getAllMusic = (request, response) => {
   try {
@@ -146,9 +293,9 @@ const updateFav = (request, response) => {
       },
     ]);
   }
-};
+ *///};
 
-module.exports = {
+/* module.exports = {
   getAllMusic,
   getArtist,
   getMusic,
@@ -156,4 +303,4 @@ module.exports = {
   updateMusic,
   deleteMusic,
   updateFav
-};
+}; */
