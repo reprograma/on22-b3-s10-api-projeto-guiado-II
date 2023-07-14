@@ -1,4 +1,107 @@
-const pods = require("../models/podcasts.json");
+const podsJson = require("../models/podcasts.json")
+
+const getAllPods = (req, res) => {
+  try {
+    res.status(200).json([{
+      podcasts: podsJson
+    }])
+  } catch (err) {
+    res.status(500).send([{
+      message: "erro no serer"
+    }])
+  }
+}
+
+const getTopics = (req, res) => {
+  const topicRequest = req.query.topic;
+  const topicFilter = podsJson.filter((pods) => pods.topic.includes(topicRequest))
+  if (topicFilter.lenght > 0){
+    res.status(200).send(topicFilter)
+  } else {
+    res.status(404).send([{
+      message: "pod não encontrado!"
+    }])
+  }
+}
+
+const addPods = (req, res) => {
+  try {
+    let nameRequest = req.body.name;
+    let podcasterRequest = req.body.podcaster;
+    let topicRequest = req.body.topic;
+    let starsRequest = req.body.stars;
+
+    let newPod = {
+      id: Math.floor(Date.now() * Math.random()).toString(36),
+      name: nameRequest,
+      podcaster: podcasterRequest,
+      topic: topicRequest,
+      stars: starsRequest
+    }
+    podsJson.push(newPod);
+    res.status(201).json([{
+      message: "new pod registered :D",
+      newPod
+    }])
+  } catch (error) {
+    console.log(error)
+    res.status(500).send([{
+      message: "error :("
+    }])
+  }
+}
+
+const updatePods = (req, res) => {
+  const idRequest = req.params.id
+  const starsRequest = req.body.stars
+  starsFind = reprogramafyPodcasts.find(podcast => podcast.id == idRequest)
+  if (starsFind) {
+      starsFind.stars = starsRequest
+      res.status(200).json([{
+          message: "Classificação atualizada :D",
+          reprogramafyPodcasts
+      }])
+  } else {
+      res.status(404).json([{
+          message: "Não foi modificado"
+      }])
+  }
+}
+
+const deletePods = (req, res) => {
+  const idRequest = req.params.id
+  const indicePods = reprogramafyPodcasts.findIndex((podcast) => podcast.id == idRequest)
+
+  reprogramafyPodcasts.splice(indicePods, 1)
+
+  if (indicePods) {
+      res.status(200).json([{
+          message: "podcast deletado",
+          "podcast deletado": idRequest,
+          reprogramafyPodcasts
+      }])
+  } else {
+      res.status(404).send([{
+          message: "Podcast não deletado."
+      }])
+  }
+}
+
+
+
+module.exports = {
+  getAllPods,
+  getTopics,
+  addPods,
+  updatePods,
+  deletePods
+
+}
+
+
+
+
+/* const pods = require("../models/podcasts.json");
 
 const getAllPods = (request, response) => {
   try {
@@ -107,10 +210,11 @@ module.exports = {
   getAllPods,
   getTopics,
   addPods,
-  atualizarPods,
+  updatePods,
   deletePods,
 };
 
 
 
 
+ */
