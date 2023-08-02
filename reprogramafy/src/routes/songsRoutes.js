@@ -1,4 +1,4 @@
-const controller = require("../controllers/songsController");
+/*const controller = require("../controllers/songsController");
 
 const express = require("express");
 
@@ -16,4 +16,4 @@ router.delete("/delete/:id", controller.deleteMusic);
 router.patch("/favorited/:id", controller.updateFav);
 
 module.exports = router;
-
+*/

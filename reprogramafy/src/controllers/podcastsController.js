@@ -1,4 +1,4 @@
-const pods = require("../models/podcasts.json");
+/*const pods = require("../models/podcasts.json");
 
 const getAllPods = (request, response) => {
   try {
@@ -113,4 +113,4 @@ module.exports = {
 
 
 
-
+*/
