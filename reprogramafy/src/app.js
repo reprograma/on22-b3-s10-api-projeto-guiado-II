@@ -1,4 +1,4 @@
-const express = require("express"); //importo o express
+/*const express = require("express"); //importo o express
 
 const app = express(); // executo o express
 
@@ -14,3 +14,4 @@ const songsRoutes = require("./routes/songsRoutes");
 app.use("/reprogramafy/playlist", songsRoutes);
 // exportando para usar o server.js
 module.exports = app;
+*/

@@ -1,4 +1,4 @@
-const app = require("./reprogramafy/src/app");
+const app = require("./reprogramafy/src/appProjetoFinalizadoAluna");
 
 const PORT = 7878;
 

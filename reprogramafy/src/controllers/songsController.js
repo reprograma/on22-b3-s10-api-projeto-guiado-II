@@ -1,4 +1,4 @@
-const music = require("../models/songs.json");
+/*const music = require("../models/songs.json");
 
 const getAllMusic = (request, response) => {
   try {
@@ -157,3 +157,4 @@ module.exports = {
   deleteMusic,
   updateFav
 };
+*/

@@ -1,4 +1,4 @@
-const controller = require("../controllers/podcastsController");
+/*const controller = require("../controllers/podcastsController");
 
 const express = require("express");
 
@@ -14,3 +14,4 @@ router.patch("/update/:id", controller.atualizarPods);
 router.delete("/delete/:id", controller.deletePods);
 
 module.exports = router;
+*/
